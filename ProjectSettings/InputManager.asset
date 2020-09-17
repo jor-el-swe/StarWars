@@ -470,43 +470,27 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Cancel
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: escape
+    m_Name: YawShip
+    descriptiveName: rotates positive around z
+    descriptiveNegativeName: rotates negative around z
+    negativeButton: z
+    positiveButton: x
     altNegativeButton: 
-    altPositiveButton: joystick button 1
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
     snap: 0
     invert: 0
     type: 0
-    axis: 0
-    joyNum: 0
-  - serializedVersion: 3
-    m_Name: Cancel
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: escape
-    altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 1000
-    dead: 0.001
-    sensitivity: 1000
-    snap: 0
-    invert: 0
-    type: 0
-    axis: 0
+    axis: 3
     joyNum: 0
   - serializedVersion: 3
     m_Name: Thruster1
     descriptiveName: Activates a thruster
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: left
+    positiveButton: '[7]'
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -522,7 +506,7 @@ InputManager:
     descriptiveName: Activates a thruster
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: right
+    positiveButton: '[9]'
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -538,7 +522,23 @@ InputManager:
     descriptiveName: Activates a thruster
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: down
+    positiveButton: '[1]'
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Thruster4
+    descriptiveName: Activates a thruster
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: '[3]'
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

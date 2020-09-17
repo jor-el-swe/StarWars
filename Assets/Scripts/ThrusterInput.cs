@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+//not used right now
 public class ThrusterInput : MonoBehaviour
 {
     public string buttonName;
@@ -14,6 +14,6 @@ public class ThrusterInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       thruster.enabled = Input.GetButton(this.buttonName);
+      // thruster.enabled = Input.GetButton(this.buttonName);
     }
 }
