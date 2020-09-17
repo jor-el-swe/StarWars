@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 
 public class ThrusterInput : MonoBehaviour
-{ 
-    //public bool isActive;
-    private Component thrusterComponent;
-    // Start is called before the first frame update
+{
+    public string buttonName;
+    
+    public Thruster thruster;
+  // Start is called before the first frame update
     void Start()
     {
+        thruster = GetComponent<Thruster>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Thruster>().enabled = Input.GetKey(KeyCode.Space);
+       thruster.enabled = Input.GetButton(this.buttonName);
     }
 }
