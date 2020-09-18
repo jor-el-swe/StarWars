@@ -79,6 +79,13 @@ public class FlyByWire : MonoBehaviour
                 t4.enabled = Input.GetButton("Thruster4");
             }
         }
+        else
+        {
+            t1.enabled = false;
+            t2.enabled = false;
+            t3.enabled = false;
+            t4.enabled = false; 
+        }
 
         //.... continye the same way with the rest of the axes
         //.... SOOO much if/else. must be a smarter way to do that.
