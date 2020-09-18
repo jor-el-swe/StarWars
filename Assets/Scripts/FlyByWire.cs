@@ -15,7 +15,7 @@ public class FlyByWire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (Input.GetAxis("Vertical") < 0)
+        if (Input.GetAxis("FwdBck") < 0)
         {
             Debug.Log("moving down");
             t1.enabled = true;
@@ -23,7 +23,7 @@ public class FlyByWire : MonoBehaviour
             t3.enabled = false;
             t4.enabled = false;
         }
-        else if (Input.GetAxis("Vertical") > 0)
+        else if (Input.GetAxis("FwdBck") > 0)
         {
             Debug.Log("moving up");
             t1.enabled = false;
@@ -31,7 +31,7 @@ public class FlyByWire : MonoBehaviour
             t3.enabled = true;
             t4.enabled = true;
         }
-        else if (Input.GetAxis("Horizontal") < 0)
+        else if (Input.GetAxis("StrafeShip") < 0)
         {
             Debug.Log("moving left");
             t1.enabled = false;
@@ -40,7 +40,7 @@ public class FlyByWire : MonoBehaviour
             t4.enabled = true;
             ;
         }
-        else if (Input.GetAxis("Horizontal") > 0)
+        else if (Input.GetAxis("StrafeShip") > 0)
         {
             Debug.Log("moving right");
             t1.enabled = true;
