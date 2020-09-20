@@ -8,9 +8,12 @@ public class FlyByWire : MonoBehaviour
     
     public Thruster t1, t2, t3, t4;
     
+   
+    
     // Start is called before the first frame update
     void Start()
     {
+ 
     }
 
     // Update is called once per frame

@@ -40,11 +40,18 @@ public class GameHandler : MonoBehaviour
     public Collider2D landingZoneCollider;
     public Collider2D spaceStationCollider;
     
+    public AudioSource mainTheme;
+    private bool fadeOnce = true;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         startPosition = spaceShipRB.position;
         startRotation = spaceShipRB.rotation;
+        mainTheme.volume = 0;
+        mainTheme.Play();
+
     }
 
     // Update is called once per frame
@@ -53,6 +60,13 @@ public class GameHandler : MonoBehaviour
         switch (currentState)
         {
             case gameState.Start:
+
+                if (fadeOnce)
+                {
+                    StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, 0.5f));
+                    fadeOnce = false;
+                }
+
                 Debug.Log("state:start");
                 crashText.enabled = false;
                 successText.enabled = false;
@@ -72,6 +86,7 @@ public class GameHandler : MonoBehaviour
             case gameState.Flying:
                 Debug.Log("state:flying");
                 
+
                 landingText.enabled = false;
                 welcomeText.enabled = false;
                 flyingText.enabled = true;
@@ -113,16 +128,23 @@ public class GameHandler : MonoBehaviour
                     if (spaceShipRB.velocity.magnitude < maxLandingVelocity)
                     {
                         currentState = gameState.GameOver;
+                        fadeOnce = true;
                     }
                     else
                     {
                         currentState = gameState.Crashed;
+                        fadeOnce = true;
                     }
                         
                 }
                 break;
             
             case gameState.GameOver:
+                if (fadeOnce)
+                {
+                    StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
+                    fadeOnce = false;
+                }
                 Debug.Log("state:game over");
                 landingText.enabled = false;
                 successText.enabled = true;
@@ -132,11 +154,17 @@ public class GameHandler : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space))
                 {
                     currentState = gameState.Start;
+                    fadeOnce = true;
                 }
                 //show game over message
                 break;
             
             case gameState.Crashed:
+                if (fadeOnce)
+                {
+                    StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
+                    fadeOnce = false;
+                }
                 Debug.Log("state:crashed");
                 
                 flyingText.enabled = false;
@@ -145,6 +173,7 @@ public class GameHandler : MonoBehaviour
                 
                 if (Input.GetKey(KeyCode.Space))
                 {
+                    fadeOnce = true;
                     currentState = gameState.Start;
                 }
                 //show game over message
@@ -167,6 +196,7 @@ public class GameHandler : MonoBehaviour
             if (spaceShipRB.velocity.magnitude > maxLandingVelocity)
             {
                 currentState = gameState.Crashed;
+                fadeOnce = true;
  
             }
         }
@@ -177,6 +207,7 @@ public class GameHandler : MonoBehaviour
         if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxSpaceDistance)
         {
             currentState = gameState.Crashed;
+            fadeOnce = true;
         }
     }
 }
