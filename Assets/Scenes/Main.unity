@@ -602,6 +602,11 @@ PrefabInstance:
       propertyPath: thrusterSound
       value: 
       objectReference: {fileID: 371842430}
+    - target: {fileID: 7773095193694324349, guid: 385be9e123a21a247be065fdb7dca5ce,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 385be9e123a21a247be065fdb7dca5ce, type: 3}
 --- !u!50 &581543956 stripped
@@ -1813,7 +1818,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 559051317}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708829040}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cae846327d953b44886a107b0681cde, type: 3}
   m_Name: 
@@ -2214,6 +2219,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
         type: 3}
+      propertyPath: thrusters.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+        type: 3}
       propertyPath: t1
       value: 
       objectReference: {fileID: 1708829044}
@@ -2242,6 +2252,26 @@ PrefabInstance:
       propertyPath: thrusterSound
       value: 
       objectReference: {fileID: 371842430}
+    - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+        type: 3}
+      propertyPath: thrusters.Array.data[0]
+      value: 
+      objectReference: {fileID: 1708829044}
+    - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+        type: 3}
+      propertyPath: thrusters.Array.data[1]
+      value: 
+      objectReference: {fileID: 1888997392}
+    - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+        type: 3}
+      propertyPath: thrusters.Array.data[2]
+      value: 
+      objectReference: {fileID: 669815862}
+    - target: {fileID: 7357146920432588136, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+        type: 3}
+      propertyPath: thrusters.Array.data[3]
+      value: 
+      objectReference: {fileID: 672773286}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffbc0d0961288f84a90d4c18bbeee1bf, type: 3}
 --- !u!1001 &5305258361360153432

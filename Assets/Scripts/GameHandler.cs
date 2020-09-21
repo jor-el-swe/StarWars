@@ -167,6 +167,7 @@ public class GameHandler : MonoBehaviour
                 }
                 Debug.Log("state:crashed");
                 
+                //show game over message
                 flyingText.enabled = false;
                 landingText.enabled = false;
                 crashText.enabled = true;
@@ -176,7 +177,6 @@ public class GameHandler : MonoBehaviour
                     fadeOnce = true;
                     currentState = gameState.Start;
                 }
-                //show game over message
                 break;
             
             default:

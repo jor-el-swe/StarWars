@@ -5,119 +5,162 @@ using UnityEngine;
 public class FlyByWire : MonoBehaviour
 {
     public GameHandler GameHandler;
-    
-    public Thruster t1, t2, t3, t4;
-
-    private bool t1Active, t2Active, t3Active, t4Active;
-    private float _hAxis, _vAxis, _yawAxis;
-
-    private bool soundEffectPlaying = false;
-    public AudioSource thrusterSound;
-
-    
    
+    //user input
+    private float _hAxis, _vAxis, _yawAxis;
+    
+    //audio
+    public AudioSource thrusterSound;
+    private bool soundEffectPlaying = false;
+    private bool playSound = true;
+    
+
+
+    public List<Thruster> thrusters;
+    
+    private List<Thruster> _leftThrusters = new List<Thruster>();
+    private List<Thruster> _rightThrusters = new List<Thruster>();
+    private List<Thruster> _bottomThrusters =new List<Thruster>();
+    private List<Thruster> _upThrusters =new List<Thruster>();
+    private List<Thruster> _clockwiseThrusters =new List<Thruster>();
+    private List<Thruster> _counterClockwiseThrusters =new List<Thruster>();
+
+    
     
     // Start is called before the first frame update
     void Start()
     {
+        foreach (var thruster in this.thrusters)
+        {
+            thruster.enabled = true;
+            if (thruster.transform.localPosition.x > 0)
+            {
+                this._rightThrusters.Add(thruster);
+                if (thruster.transform.localPosition.y < 0)
+                {
+                    this._clockwiseThrusters.Add(thruster);
+                }
+                if (thruster.transform.localPosition.y > 0)
+                {
+                    this._counterClockwiseThrusters.Add(thruster);
+                }
+            }
+            
+            if (thruster.transform.localPosition.x < 0)
+            {
+                this._leftThrusters.Add(thruster);
+                if (thruster.transform.localPosition.y > 0)
+                {
+                    this._clockwiseThrusters.Add(thruster);
+                }
+                if (thruster.transform.localPosition.y < 0)
+                {
+                    this._counterClockwiseThrusters.Add(thruster);
+                }
+            }
+            
+            if (thruster.transform.localPosition.y < 0)
+            {
+                this._bottomThrusters.Add(thruster);
+            }
+            
+            if (thruster.transform.localPosition.y > 0)
+            {
+                this._upThrusters.Add(thruster);
+            }
+            
+        }
+
         thrusterSound.volume = 0;
         thrusterSound.Play();
- 
     }
 
     // Update is called once per frame
   void Update()
     {
+        //reset all previous scaling of forces 
+        foreach (var thruster in this.thrusters)
+        {
+            thruster.forceMagnitude = 0f;
+        }
+        
         if (GameHandler.currentState != GameHandler.gameState.GameOver &&
             GameHandler.currentState != GameHandler.gameState.Crashed)
         {
-            t1Active = Input.GetButton("Thruster1");
-            t2Active = Input.GetButton("Thruster2");
-            t3Active = Input.GetButton("Thruster3");
-            t4Active = Input.GetButton("Thruster4");
-            
-            //reset all previous scaling of forces (previous diagonal moves)
-            t1.forceMagnitude = 1;
-            t2.forceMagnitude = 1;
-            t3.forceMagnitude = 1;
-            t4.forceMagnitude = 1;
-
+            //get user axis input
             _hAxis = Input.GetAxis("StrafeShip");
             _vAxis = Input.GetAxis("FwdBck"); 
             _yawAxis = Input.GetAxis("YawShip");
-    
-            // for next iteration. replace all enable/disable with setting of magnitudes for all thrusters.
-            // add += for each forceMagnitude
-            //change particle effect start lifetime
-             if (_vAxis < 0)
-             {
-                 Debug.Log("moving down");
-                 t1Active = true;
-                 t2Active = true;
-                 
-                 //counteract the rotation when going on a diagonal
-                 if (_hAxis > 0)
-                 {
-                     t1.forceMagnitude = 2 * _hAxis;
-                 }
-                 if (_hAxis < 0)
-                 {
-                     t2.forceMagnitude = -2 *_hAxis;
-                 }
-             }
-             if (_vAxis > 0)
-             {
-                 Debug.Log("moving up");
-                 t3Active = true;
-                 t4Active = true;
-                 
-                 //counteract the rotation when going on a diagonal
-                 if (_hAxis > 0)
-                 {
-                     t3.forceMagnitude = 2 * _hAxis;
-                 }
-                 if (_hAxis < 0)
-                 {
-                     t4.forceMagnitude = -2 *_hAxis;
-                 }
-             }
-             if (_hAxis < 0)
-             {
-                 Debug.Log("moving left");
-                 t2Active = true;
-                 t4Active = true;
-                        
-             }
-             if (_hAxis > 0)
-             {
-                 Debug.Log("moving right");
-                 t1Active = true;
-                 t3Active = true;
-                        
-             }
-             if (_yawAxis < 0)
-             {
-                 Debug.Log("yawing counter clockwise");
-                 t2Active = true; 
-                 t3Active = true;
-             }
-             if (_yawAxis > 0)
-             {
-                 Debug.Log("yawing clockwise");
-                 t1Active = true;
-                 t4Active = true;
-             }
 
+            if (_hAxis != 0 || _vAxis != 0 || _yawAxis != 0)
+            {
+                playSound = true;
+            }
+            else
+            {
+                playSound = false;
+            }
+
+            if (_vAxis < 0)
+            {
+                 Debug.Log("moving down");
+                 foreach (var thruster in this._upThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+            }
+            if (_vAxis > 0)
+            {
+                 Debug.Log("moving up");
+    
+                 foreach (var thruster in this._bottomThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+  
+            }
+            if (_hAxis < 0)
+            {
+                 Debug.Log("moving left");
+                 foreach (var thruster in this._rightThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+                        
+            }
+            if (_hAxis > 0)
+            {
+                 Debug.Log("moving right");
+                 foreach (var thruster in this._leftThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+                        
+            }
+            if (_yawAxis > 0)
+            {
+                 Debug.Log("yawing counter clockwise");
+                 foreach (var thruster in this._clockwiseThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+            }
+            if (_yawAxis < 0)
+            {
+                 Debug.Log("yawing clockwise");
+                 foreach (var thruster in this._counterClockwiseThrusters)
+                 {
+                     thruster.forceMagnitude++;
+                 }
+            }
         }
         else
         {
-            t1Active = false;
-            t2Active = false;
-            t3Active = false;
-            t4Active = false;
+            playSound = false;
         }
 
-        if (t1Active || t2Active || t3Active || t4Active) 
+        //manage the in-game music        
+        if (playSound) 
         {
             if (!soundEffectPlaying)
             {
@@ -133,10 +176,6 @@ public class FlyByWire : MonoBehaviour
                 soundEffectPlaying = false;
             }
         }
-
-        t1.enabled = t1Active;
-        t2.enabled = t2Active;
-        t3.enabled = t3Active;
-        t4.enabled = t4Active;
+        
     }
 }
