@@ -9,14 +9,14 @@ public class Thruster : MonoBehaviour
     public float forceMagnitude = 1f;
     private Rigidbody2D _rb2D;
     private ParticleSystem _particleSystem;
-    public AudioSource thrusterSound;
+ //   public AudioSource thrusterSound;
 
     // Start is called before the first frame update
     void Start()
     {
         _rb2D = this.transform.GetComponent<Rigidbody2D>();
-        thrusterSound.volume = 0;
-        thrusterSound.Play();
+   //     thrusterSound.volume = 0;
+     //   thrusterSound.Play();
         _particleSystem = GetComponent<ParticleSystem>();
     }
 
@@ -29,14 +29,14 @@ public class Thruster : MonoBehaviour
     private void OnEnable()
     {
         _particleSystem.Play();
-        StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0.3f));
+        //StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0.3f));
 
     }
 
     private void OnDisable()
     {
         _particleSystem.Stop();
-        StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0f));
+        //StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0f));
 
     }
 }
