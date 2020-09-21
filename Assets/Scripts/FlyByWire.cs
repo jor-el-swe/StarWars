@@ -7,6 +7,8 @@ public class FlyByWire : MonoBehaviour
     public GameHandler GameHandler;
     
     public Thruster t1, t2, t3, t4;
+
+    private bool t1Active, t2Active, t3Active, t4Active;
     
    
     
@@ -22,75 +24,63 @@ public class FlyByWire : MonoBehaviour
         if (GameHandler.currentState != GameHandler.gameState.GameOver &&
             GameHandler.currentState != GameHandler.gameState.Crashed)
         {
-
-
+            t1Active = false;
+            t2Active = false; 
+            t3Active = false;
+            t4Active = false;
+    
+            //next: refactor by removing all "else" to enable multiple commands
             if (Input.GetAxis("FwdBck") < 0)
             {
                 Debug.Log("moving down");
-                t1.enabled = true;
-                t2.enabled = true;
-                t3.enabled = false;
-                t4.enabled = false;
+                t1Active = true;
+                t2Active = true;
             }
             else if (Input.GetAxis("FwdBck") > 0)
             {
                 Debug.Log("moving up");
-                t1.enabled = false;
-                t2.enabled = false;
-                t3.enabled = true;
-                t4.enabled = true;
+                t3Active = true;
+                t4Active = true;
             }
             else if (Input.GetAxis("StrafeShip") < 0)
             {
                 Debug.Log("moving left");
-                t1.enabled = false;
-                t2.enabled = true;
-                t3.enabled = false;
-                t4.enabled = true;
-                ;
+                t2Active = true;
+                t4Active = true;
+                
             }
             else if (Input.GetAxis("StrafeShip") > 0)
             {
                 Debug.Log("moving right");
-                t1.enabled = true;
-                t2.enabled = false;
-                t3.enabled = true;
-                t4.enabled = false;
-                ;
+                t1Active = true;
+                t3Active = true;
+                
             }
             else if (Input.GetAxis("YawShip") < 0)
             {
                 Debug.Log("yawing counter clockwise");
-                t1.enabled = false;
-                t2.enabled = true;
-                t3.enabled = true;
-                t4.enabled = false;
+                t2Active = true; 
+                t3Active = true;
             }
             else if (Input.GetAxis("YawShip") > 0)
             {
                 Debug.Log("yawing clockwise");
-                t1.enabled = true;
-                t2.enabled = false;
-                t3.enabled = false;
-                t4.enabled = true;
+                t1Active = true;
+                t4Active = true;
             }
             else
             {
-                t1.enabled = Input.GetButton("Thruster1");
-                t2.enabled = Input.GetButton("Thruster2");
-                t3.enabled = Input.GetButton("Thruster3");
-                t4.enabled = Input.GetButton("Thruster4");
+                //next: move this section to the top, to avoid the "else"
+                t1Active = Input.GetButton("Thruster1");
+                t2Active = Input.GetButton("Thruster2");
+                t3Active = Input.GetButton("Thruster3");
+                t4Active = Input.GetButton("Thruster4");
             }
         }
-        else
-        {
-            t1.enabled = false;
-            t2.enabled = false;
-            t3.enabled = false;
-            t4.enabled = false; 
-        }
 
-        //.... continye the same way with the rest of the axes
-        //.... SOOO much if/else. must be a smarter way to do that.
+        t1.enabled = t1Active;
+        t2.enabled = t2Active;
+        t3.enabled = t3Active;
+        t4.enabled = t4Active;
     }
 }
