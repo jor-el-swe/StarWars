@@ -153,6 +153,14 @@ public class FlyByWire : MonoBehaviour
                      thruster.forceMagnitude++;
                  }
             }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                GetComponent<Rigidbody2D>().velocity *= 0.99f;
+                
+                GetComponent<Rigidbody2D>().angularVelocity *= 0.99f;
+                
+            }
         }
         else
         {
