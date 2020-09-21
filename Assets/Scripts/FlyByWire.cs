@@ -46,7 +46,9 @@ public class FlyByWire : MonoBehaviour
             _vAxis = Input.GetAxis("FwdBck"); 
             _yawAxis = Input.GetAxis("YawShip");
     
-           
+            // for next iteration. replace all enable/disable with setting of magnitudes for all thrusters.
+            // add += for each forceMagnitude
+            //change particle effect start lifetime
              if (_vAxis < 0)
              {
                  Debug.Log("moving down");
