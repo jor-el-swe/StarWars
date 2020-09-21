@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1446987106614146234}
   - component: {fileID: 508616852619231001}
   - component: {fileID: 7620096147891729516}
-  - component: {fileID: 2691346527033993325}
   - component: {fileID: 7773095193694324349}
   - component: {fileID: 1594924531552912658}
   - component: {fileID: 9034582282478441434}
@@ -86,20 +85,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &2691346527033993325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5389489793010720893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b428deb550698247ad60c684da39f10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonName: 
-  thruster: {fileID: 0}
 --- !u!114 &7773095193694324349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 1
+  thrusterSound: {fileID: 0}
 --- !u!198 &1594924531552912658
 ParticleSystem:
   m_ObjectHideFlags: 0
