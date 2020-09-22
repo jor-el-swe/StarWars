@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FlyByWire : MonoBehaviour
 {
+    private const int LIMIT_ANGULAR_VELOCITY = 10;
     public GameHandler GameHandler;
    
     //user input
@@ -13,8 +15,8 @@ public class FlyByWire : MonoBehaviour
     public AudioSource thrusterSound;
     private bool soundEffectPlaying = false;
     private bool playSound = true;
-    
 
+    private Rigidbody2D _SpaceshipRB;
 
     public List<Thruster> thrusters;
     
@@ -30,6 +32,8 @@ public class FlyByWire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _SpaceshipRB = GetComponent<Rigidbody2D>();
+        
         foreach (var thruster in this.thrusters)
         {
             thruster.enabled = true;
@@ -104,62 +108,39 @@ public class FlyByWire : MonoBehaviour
             if (_vAxis < 0)
             {
                  Debug.Log("moving down");
-                 foreach (var thruster in this._upThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
+                 ActivateThrusters(_upThrusters, 1);
             }
             if (_vAxis > 0)
             {
                  Debug.Log("moving up");
-    
-                 foreach (var thruster in this._bottomThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
-  
+                 ActivateThrusters(_bottomThrusters, 1);
             }
             if (_hAxis < 0)
             {
                  Debug.Log("moving left");
-                 foreach (var thruster in this._rightThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
-                        
+                 ActivateThrusters(_rightThrusters, 1);
             }
             if (_hAxis > 0)
             {
                  Debug.Log("moving right");
-                 foreach (var thruster in this._leftThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
-                        
+                 ActivateThrusters(_leftThrusters, 1);
             }
             if (_yawAxis > 0)
             {
                  Debug.Log("yawing counter clockwise");
-                 foreach (var thruster in this._clockwiseThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
+                 ActivateThrusters(_clockwiseThrusters, 1);
             }
             if (_yawAxis < 0)
             {
                  Debug.Log("yawing clockwise");
-                 foreach (var thruster in this._counterClockwiseThrusters)
-                 {
-                     thruster.forceMagnitude++;
-                 }
+                 ActivateThrusters(_counterClockwiseThrusters, 1);
             }
 
             if (Input.GetKey(KeyCode.Space))
             {
-                GetComponent<Rigidbody2D>().velocity *= 0.99f;
-                
-                GetComponent<Rigidbody2D>().angularVelocity *= 0.99f;
-                
+                //TODO
+                //make the brakes work  using the thrusters instead
+                DecayVelocity();
             }
         }
         else
@@ -186,4 +167,58 @@ public class FlyByWire : MonoBehaviour
         }
         
     }
+
+  void DecayVelocity()
+  {
+      if (Math.Abs(_SpaceshipRB.angularVelocity) > LIMIT_ANGULAR_VELOCITY)
+      {
+          //first check angular velocity, and apply counter/clockwise thrusters
+          if (_SpaceshipRB.angularVelocity > 0)
+          {
+              ActivateThrusters(_clockwiseThrusters, 2);
+
+          }
+          else if (_SpaceshipRB.angularVelocity < 0)
+          {
+              ActivateThrusters(_counterClockwiseThrusters, 2);
+          }
+      }
+      else
+      {
+          _SpaceshipRB.angularVelocity = 0;
+      }
+  
+                
+      //then check velocity in x/y and apply thrusters in that direction
+      var localDir = this.transform.InverseTransformDirection(_SpaceshipRB.velocity);
+      if (localDir.x > 0)
+      {
+          ActivateThrusters(_rightThrusters, 1);  
+      }
+      
+      if (localDir.x < 0)
+      {
+          ActivateThrusters(_leftThrusters, 1);          
+      }
+      
+      if (localDir.y > 0)
+      {
+          ActivateThrusters(_upThrusters, 1);       
+      }
+      
+      if (localDir.y < 0)
+      {
+          ActivateThrusters(_bottomThrusters, 1);           
+      }
+  }
+  
+  //improve implementation later
+  void ActivateThrusters(List<Thruster> inputThrusters, int value)
+  {
+      foreach (var thruster in inputThrusters)
+      {
+          thruster.forceMagnitude+=value;
+      }
+  }
+  
 }
