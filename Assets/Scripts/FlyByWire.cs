@@ -29,7 +29,6 @@ public class FlyByWire : MonoBehaviour
     private List<Thruster> _upThrusters =new List<Thruster>();
     private List<Thruster> _clockwiseThrusters =new List<Thruster>();
     private List<Thruster> _counterClockwiseThrusters =new List<Thruster>();
-
     
     
     // Start is called before the first frame update
