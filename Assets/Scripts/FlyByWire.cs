@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class FlyByWire : MonoBehaviour
 {
+    
+    //[SerializeField] instead of public
+    
     private const int LIMIT_ANGULAR_VELOCITY = 10;
     public GameHandler GameHandler;
    
@@ -13,10 +16,10 @@ public class FlyByWire : MonoBehaviour
     
     //audio
     public AudioSource thrusterSound;
-    private bool soundEffectPlaying = false;
-    private bool playSound = true;
+    private bool _soundEffectPlaying = false;
+    private bool _playSound = true;
 
-    private Rigidbody2D _SpaceshipRB;
+    private Rigidbody2D _spaceshipRb;
 
     public List<Thruster> thrusters;
     
@@ -32,7 +35,7 @@ public class FlyByWire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _SpaceshipRB = GetComponent<Rigidbody2D>();
+        _spaceshipRb = GetComponent<Rigidbody2D>();
         
         foreach (var thruster in this.thrusters)
         {
@@ -98,11 +101,11 @@ public class FlyByWire : MonoBehaviour
 
             if (_hAxis != 0 || _vAxis != 0 || _yawAxis != 0)
             {
-                playSound = true;
+                _playSound = true;
             }
             else
             {
-                playSound = false;
+                _playSound = false;
             }
 
             if (_vAxis < 0)
@@ -145,24 +148,24 @@ public class FlyByWire : MonoBehaviour
         }
         else
         {
-            playSound = false;
+            _playSound = false;
         }
 
         //manage the in-game music        
-        if (playSound) 
+        if (_playSound) 
         {
-            if (!soundEffectPlaying)
+            if (!_soundEffectPlaying)
             {
                 StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0.3f));
-                soundEffectPlaying = true;
+                _soundEffectPlaying = true;
             }
         }
         else
         {
-            if (soundEffectPlaying)
+            if (_soundEffectPlaying)
             { 
                 StartCoroutine(FadeAudioSource.StartFade(thrusterSound, 0.1f, 0.0f));
-                soundEffectPlaying = false;
+                _soundEffectPlaying = false;
             }
         }
         
@@ -170,49 +173,57 @@ public class FlyByWire : MonoBehaviour
 
   void DecayVelocity()
   {
-      if (Math.Abs(_SpaceshipRB.angularVelocity) > LIMIT_ANGULAR_VELOCITY)
+      if (Math.Abs(_spaceshipRb.angularVelocity) > LIMIT_ANGULAR_VELOCITY)
       {
           //first check angular velocity, and apply counter/clockwise thrusters
-          if (_SpaceshipRB.angularVelocity > 0)
+          if (_spaceshipRb.angularVelocity > 0)
           {
               ActivateThrusters(_clockwiseThrusters, 2);
 
           }
-          else if (_SpaceshipRB.angularVelocity < 0)
+          else if (_spaceshipRb.angularVelocity < 0)
           {
               ActivateThrusters(_counterClockwiseThrusters, 2);
           }
       }
       else
       {
-          _SpaceshipRB.angularVelocity = 0;
+          _spaceshipRb.angularVelocity = 0;
       }
   
                 
       //then check velocity in x/y and apply thrusters in that direction
-      var localDir = this.transform.InverseTransformDirection(_SpaceshipRB.velocity);
-      if (localDir.x > 0)
+      if (_spaceshipRb.velocity.magnitude > 0.1)
       {
-          ActivateThrusters(_rightThrusters, 1);  
-      }
+          var localDir = this.transform.InverseTransformDirection(_spaceshipRb.velocity);
+          if (localDir.x > 0)
+          {
+              ActivateThrusters(_rightThrusters, 1);  
+          }
       
-      if (localDir.x < 0)
-      {
-          ActivateThrusters(_leftThrusters, 1);          
-      }
+          if (localDir.x < 0)
+          {
+              ActivateThrusters(_leftThrusters, 1);          
+          }
       
-      if (localDir.y > 0)
-      {
-          ActivateThrusters(_upThrusters, 1);       
-      }
+          if (localDir.y > 0)
+          {
+              ActivateThrusters(_upThrusters, 1);       
+          }
       
-      if (localDir.y < 0)
-      {
-          ActivateThrusters(_bottomThrusters, 1);           
+          if (localDir.y < 0)
+          {
+              ActivateThrusters(_bottomThrusters, 1);           
+          }
       }
+      else
+      {
+          _spaceshipRb.velocity = new Vector2(0,0);
+      }
+
   }
   
-  //improve implementation later
+  //maybe improve implementation later to take axes as parameter
   void ActivateThrusters(List<Thruster> inputThrusters, int value)
   {
       foreach (var thruster in inputThrusters)
