@@ -15,7 +15,7 @@ public class FlyByWire : MonoBehaviour
     private float _hAxis, _vAxis, _yawAxis;
     
     //audio
-    public AudioSource thrusterSound;
+    [SerializeField] AudioSource thrusterSound;
     private bool _soundEffectPlaying = false;
     private bool _playSound = true;
 
@@ -84,7 +84,7 @@ public class FlyByWire : MonoBehaviour
     // Update is called once per frame
   void Update()
     {
-        //reset all previous scaling of forces 
+        //reset all previous forces 
         foreach (var thruster in this.thrusters)
         {
             thruster.forceMagnitude = 0f;
@@ -109,39 +109,37 @@ public class FlyByWire : MonoBehaviour
 
             if (_vAxis < 0)
             {
-                 Debug.Log("moving down");
+                 //Debug.Log("moving down");
                  ActivateThrusters(_upThrusters, 1);
             }
             if (_vAxis > 0)
             {
-                 Debug.Log("moving up");
+                // Debug.Log("moving up");
                  ActivateThrusters(_bottomThrusters, 1);
             }
             if (_hAxis < 0)
             {
-                 Debug.Log("moving left");
+                 //Debug.Log("moving left");
                  ActivateThrusters(_rightThrusters, 1);
             }
             if (_hAxis > 0)
             {
-                 Debug.Log("moving right");
+                // Debug.Log("moving right");
                  ActivateThrusters(_leftThrusters, 1);
             }
             if (_yawAxis > 0)
             {
-                 Debug.Log("yawing counter clockwise");
+                // Debug.Log("yawing counter clockwise");
                  ActivateThrusters(_clockwiseThrusters, 1);
             }
             if (_yawAxis < 0)
             {
-                 Debug.Log("yawing clockwise");
+                // Debug.Log("yawing clockwise");
                  ActivateThrusters(_counterClockwiseThrusters, 1);
             }
 
             if (Input.GetKey(KeyCode.Space))
             {
-                //TODO
-                //make the brakes work  using the thrusters instead
                 DecayVelocity();
             }
         }

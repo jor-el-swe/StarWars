@@ -18,11 +18,13 @@ public class GameHandler : MonoBehaviour
     }
     public gameState currentState = gameState.Start;
 
+    //UI handling
     public TextMeshProUGUI welcomeText;
     public TextMeshProUGUI flyingText;
     public TextMeshProUGUI landingText;
     public TextMeshProUGUI successText;
     public TextMeshProUGUI crashText;
+    
     
     private Vector2 startPosition;
     private float startRotation;
@@ -40,6 +42,7 @@ public class GameHandler : MonoBehaviour
     public Collider2D landingZoneCollider;
     public Collider2D spaceStationCollider;
     
+    //game music
     public AudioSource mainTheme;
     private bool fadeOnce = true;
 
@@ -67,7 +70,7 @@ public class GameHandler : MonoBehaviour
                     fadeOnce = false;
                 }
 
-                Debug.Log("state:start");
+                //Debug.Log("state:start");
                 crashText.enabled = false;
                 successText.enabled = false;
                 welcomeText.enabled = true;
@@ -83,8 +86,9 @@ public class GameHandler : MonoBehaviour
                 }
                 spaceShipRB.velocity = new Vector2(0,0);
                 break;
-            case gameState.Flying:
-                Debug.Log("state:flying");
+            
+                case gameState.Flying:
+                //Debug.Log("state:flying");
                 
 
                 landingText.enabled = false;
@@ -100,7 +104,6 @@ public class GameHandler : MonoBehaviour
                 
                 //crash if we hit the space station too hard
                 TestIfCrashed();
-
                 TestIfLostInSpace();
                 
                 break;
@@ -114,7 +117,7 @@ public class GameHandler : MonoBehaviour
                 if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxLandingDistance)
                 {
                     currentState = gameState.Flying;
-                    //display flying message
+                    break;
                 }
 
                 //crash if we hit the space station too hard
@@ -145,7 +148,7 @@ public class GameHandler : MonoBehaviour
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
                     fadeOnce = false;
                 }
-                Debug.Log("state:game over");
+                //Debug.Log("state:game over");
                 landingText.enabled = false;
                 successText.enabled = true;
                 
@@ -165,7 +168,7 @@ public class GameHandler : MonoBehaviour
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
                     fadeOnce = false;
                 }
-                Debug.Log("state:crashed");
+                //Debug.Log("state:crashed");
                 
                 //show game over message
                 flyingText.enabled = false;

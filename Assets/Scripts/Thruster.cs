@@ -31,11 +31,9 @@ public class Thruster : MonoBehaviour
 
     private void OnEnable()
     {
-        _particleSystem.Play();
     }
 
     private void OnDisable()
     {
-        _particleSystem.Stop();
     }
 }
