@@ -9,6 +9,8 @@ public class FlyByWire : MonoBehaviour
     //[SerializeField] instead of public
     
     private const int LIMIT_ANGULAR_VELOCITY = 10;
+    
+    //remove this. use events/signalling instead
     public GameHandler GameHandler;
    
     //user input

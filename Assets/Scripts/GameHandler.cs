@@ -20,6 +20,8 @@ public class GameHandler : MonoBehaviour
     private bool _hasRestarted = false;
 
     //UI handling
+    //create a new UI component
+    //make that aware of the gamestate
     [SerializeField] TextMeshProUGUI welcomeText = null;
     [SerializeField] TextMeshProUGUI flyingText = null;
     [SerializeField] TextMeshProUGUI landingText = null;
@@ -33,9 +35,12 @@ public class GameHandler : MonoBehaviour
     private const float maxLandingVelocity = 0.3f;
     private const float maxSpaceDistance = 15.0f;
     
+    
+    //move this logic to its respective components
     [SerializeField]  Rigidbody2D spaceShipRB = null;
     [SerializeField]  GameObject landingZone = null;
 
+    
     [SerializeField] Collider2D thruster1 = null;
     [SerializeField] Collider2D thruster2 = null;
     [SerializeField] Collider2D landingLeg1Collider = null;
