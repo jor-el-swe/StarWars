@@ -15,13 +15,13 @@ public class FlyByWire : MonoBehaviour
     private float _hAxis, _vAxis, _yawAxis;
     
     //audio
-    [SerializeField] AudioSource thrusterSound;
+    [SerializeField] AudioSource thrusterSound = null;
     private bool _soundEffectPlaying = false;
     private bool _playSound = true;
 
     private Rigidbody2D _spaceshipRb;
 
-    public List<Thruster> thrusters;
+    [SerializeField] List<Thruster> thrusters = null;
     
     private List<Thruster> _leftThrusters = new List<Thruster>();
     private List<Thruster> _rightThrusters = new List<Thruster>();

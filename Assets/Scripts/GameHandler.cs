@@ -17,33 +17,34 @@ public class GameHandler : MonoBehaviour
         Crashed
     }
     public gameState currentState = gameState.Start;
+    private bool _hasRestarted = false;
 
     //UI handling
-    public TextMeshProUGUI welcomeText;
-    public TextMeshProUGUI flyingText;
-    public TextMeshProUGUI landingText;
-    public TextMeshProUGUI successText;
-    public TextMeshProUGUI crashText;
+    [SerializeField] TextMeshProUGUI welcomeText = null;
+    [SerializeField] TextMeshProUGUI flyingText = null;
+    [SerializeField] TextMeshProUGUI landingText = null;
+    [SerializeField] TextMeshProUGUI successText = null;
+    [SerializeField] TextMeshProUGUI crashText = null;
     
     
     private Vector2 startPosition;
     private float startRotation;
-    public float maxLandingDistance = 3.0f;
-    public float maxLandingVelocity = 0.3f;
-    public float maxSpaceDistance = 15.0f;
+    private const float maxLandingDistance = 3.0f;
+    private const float maxLandingVelocity = 0.3f;
+    private const float maxSpaceDistance = 15.0f;
     
-    public Rigidbody2D spaceShipRB;
-    public GameObject landingZone;
+    [SerializeField]  Rigidbody2D spaceShipRB = null;
+    [SerializeField]  GameObject landingZone = null;
 
-    public Collider2D thruster1;
-    public Collider2D thruster2;
-    public Collider2D landingLeg1Collider;
-    public Collider2D landingLeg2Collider;
-    public Collider2D landingZoneCollider;
-    public Collider2D spaceStationCollider;
+    [SerializeField] Collider2D thruster1 = null;
+    [SerializeField] Collider2D thruster2 = null;
+    [SerializeField] Collider2D landingLeg1Collider = null;
+    [SerializeField] Collider2D landingLeg2Collider = null;
+    [SerializeField] Collider2D landingZoneCollider = null;
+    [SerializeField] Collider2D spaceStationCollider = null;
     
     //game music
-    public AudioSource mainTheme;
+    [SerializeField]  AudioSource mainTheme = null;
     private bool _fadeOnce = true;
 
     
@@ -80,7 +81,7 @@ public class GameHandler : MonoBehaviour
                 spaceShipRB.rotation = startRotation;
                 spaceShipRB.angularVelocity = 0f;
                     
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKey(KeyCode.Space) || _hasRestarted)
                 {
                     currentState = gameState.Flying;
                 }
@@ -175,9 +176,10 @@ public class GameHandler : MonoBehaviour
                 landingText.enabled = false;
                 crashText.enabled = true;
                 
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKeyUp(KeyCode.Space))
                 {
                     _fadeOnce = true;
+                    _hasRestarted = true;
                     currentState = gameState.Start;
                 }
                 break;
