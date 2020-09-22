@@ -44,7 +44,7 @@ public class GameHandler : MonoBehaviour
     
     //game music
     public AudioSource mainTheme;
-    private bool fadeOnce = true;
+    private bool _fadeOnce = true;
 
     
     // Start is called before the first frame update
@@ -64,10 +64,10 @@ public class GameHandler : MonoBehaviour
         {
             case gameState.Start:
 
-                if (fadeOnce)
+                if (_fadeOnce)
                 {
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, 0.5f));
-                    fadeOnce = false;
+                    _fadeOnce = false;
                 }
 
                 //Debug.Log("state:start");
@@ -131,22 +131,22 @@ public class GameHandler : MonoBehaviour
                     if (spaceShipRB.velocity.magnitude < maxLandingVelocity)
                     {
                         currentState = gameState.GameOver;
-                        fadeOnce = true;
+                        _fadeOnce = true;
                     }
                     else
                     {
                         currentState = gameState.Crashed;
-                        fadeOnce = true;
+                        _fadeOnce = true;
                     }
                         
                 }
                 break;
             
             case gameState.GameOver:
-                if (fadeOnce)
+                if (_fadeOnce)
                 {
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
-                    fadeOnce = false;
+                    _fadeOnce = false;
                 }
                 //Debug.Log("state:game over");
                 landingText.enabled = false;
@@ -157,16 +157,16 @@ public class GameHandler : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space))
                 {
                     currentState = gameState.Start;
-                    fadeOnce = true;
+                    _fadeOnce = true;
                 }
                 //show game over message
                 break;
             
             case gameState.Crashed:
-                if (fadeOnce)
+                if (_fadeOnce)
                 {
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
-                    fadeOnce = false;
+                    _fadeOnce = false;
                 }
                 //Debug.Log("state:crashed");
                 
@@ -177,7 +177,7 @@ public class GameHandler : MonoBehaviour
                 
                 if (Input.GetKey(KeyCode.Space))
                 {
-                    fadeOnce = true;
+                    _fadeOnce = true;
                     currentState = gameState.Start;
                 }
                 break;
@@ -199,7 +199,7 @@ public class GameHandler : MonoBehaviour
             if (spaceShipRB.velocity.magnitude > maxLandingVelocity)
             {
                 currentState = gameState.Crashed;
-                fadeOnce = true;
+                _fadeOnce = true;
  
             }
         }
@@ -210,7 +210,7 @@ public class GameHandler : MonoBehaviour
         if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxSpaceDistance)
         {
             currentState = gameState.Crashed;
-            fadeOnce = true;
+            _fadeOnce = true;
         }
     }
 }
