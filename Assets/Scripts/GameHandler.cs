@@ -67,7 +67,7 @@ public class GameHandler : MonoBehaviour
                 }
                 break;
             
-                case gameState.Flying:
+            case gameState.Flying:
 
                 hudController.ShowFlyingMessage();
                 

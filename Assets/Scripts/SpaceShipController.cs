@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*this script controls collisions and if spacehip is lost in space
+*/
+
 public class SpaceShipController : MonoBehaviour
 {
-    [SerializeField] GameObject landingZone = null;
-    [SerializeField] Collider2D landingZoneCollider = null;
-    [SerializeField] Collider2D spaceStationCollider = null;
+    [SerializeField] private  GameObject landingZone = null;
+    [SerializeField] private Collider2D landingZoneCollider = null;
+    [SerializeField] private Collider2D spaceStationCollider = null;
 
 
     //getcomponentsinchildren for these thrusters!!!
-    [SerializeField] Collider2D thruster1 = null;
-    [SerializeField] Collider2D thruster2 = null;
-    [SerializeField] Collider2D landingLeg1Collider = null;
-    [SerializeField] Collider2D landingLeg2Collider = null;
+    [SerializeField] private Collider2D thruster1 = null;
+    [SerializeField] private Collider2D thruster2 = null;
+    [SerializeField] private Collider2D landingLeg1Collider = null;
+    [SerializeField] private Collider2D landingLeg2Collider = null;
     
     
     private Vector2 _startPosition;

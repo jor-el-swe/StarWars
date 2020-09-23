@@ -1,8 +1,7 @@
 ﻿using System;
-
 using UnityEngine;
 using UnityEngine.UIElements;
-using Object = System.Object;
+
 
 public class Thruster : MonoBehaviour
 {
@@ -29,11 +28,4 @@ public class Thruster : MonoBehaviour
         main.startLifetimeMultiplier = this.forceMagnitude * 2f;
     }
 
-    private void OnEnable()
-    {
-    }
-
-    private void OnDisable()
-    {
-    }
 }
