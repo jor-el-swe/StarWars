@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -8,6 +9,10 @@ public class HUDController : MonoBehaviour
     //UI handling
     //create a new UI component
     //make that aware of the gamestate
+    
+    
+    //findobjectoftype(hud)/gamemanager)
+    //getcomponentsinchildren
     
     [SerializeField] TextMeshProUGUI welcomeText = null;
     [SerializeField] TextMeshProUGUI flyingText = null;

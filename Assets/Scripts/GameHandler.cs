@@ -22,25 +22,8 @@ public class GameHandler : MonoBehaviour
     //UI handling
     [SerializeField] HUDController hudController = null;
     
-    
-    private Vector2 startPosition;
-    private float startRotation;
-    private const float maxLandingDistance = 3.0f;
-    private const float maxLandingVelocity = 0.3f;
-    private const float maxSpaceDistance = 15.0f;
-    
-    
-    //move this logic to its respective components
-    [SerializeField]  Rigidbody2D spaceShipRB = null;
-    [SerializeField]  GameObject landingZone = null;
-
-    
-    [SerializeField] Collider2D thruster1 = null;
-    [SerializeField] Collider2D thruster2 = null;
-    [SerializeField] Collider2D landingLeg1Collider = null;
-    [SerializeField] Collider2D landingLeg2Collider = null;
-    [SerializeField] Collider2D landingZoneCollider = null;
-    [SerializeField] Collider2D spaceStationCollider = null;
+    //Spaceship collision handling
+    [SerializeField] SpaceShipController spaceshipController = null;
     
     //game music
     [SerializeField]  AudioSource mainTheme = null;
@@ -50,12 +33,11 @@ public class GameHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startPosition = spaceShipRB.position;
-        startRotation = spaceShipRB.rotation;
+
         mainTheme.volume = 0;
         mainTheme.Play();
-
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -69,67 +51,70 @@ public class GameHandler : MonoBehaviour
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, 0.5f));
                     _fadeOnce = false;
                 }
-
-                //Debug.Log("state:start");
+                
+                //show start message
+                //sendmessage() can be used to invoke method also
                 hudController.ShowStartMessage();
                 
+                
                 //reset spaceship position
-                spaceShipRB.position = startPosition;
-                spaceShipRB.rotation = startRotation;
-                spaceShipRB.angularVelocity = 0f;
-                    
+                spaceshipController.ResetSpaceshipStartPosition();
+
+
                 if (Input.GetKey(KeyCode.Space) || _hasRestarted)
                 {
                     currentState = gameState.Flying;
                 }
-                spaceShipRB.velocity = new Vector2(0,0);
                 break;
             
                 case gameState.Flying:
-                //Debug.Log("state:flying");
+
                 hudController.ShowFlyingMessage();
                 
                 //enter landing state if we are close enough
-                if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) < maxLandingDistance)
+                if (spaceshipController.IsApproachingLanding())
                 {
                     currentState = gameState.Landing;
                 }
-                
+
                 //crash if we hit the space station too hard
-                TestIfCrashed();
-                TestIfLostInSpace();
+                if (spaceshipController.HasCrashed())
+                {
+                    currentState = gameState.Crashed;
+                    _fadeOnce = true;
+                }
+                
+                //crash if we get too far from spacestation
+                if (spaceshipController.IsLostInSpace())
+                {
+                    currentState = gameState.Crashed;
+                    _fadeOnce = true;
+                }
                 
                 break;
             
 
             case gameState.Landing:
-                //Debug.Log("state:landing");
                 hudController.ShowLandingMessage();
 
-                if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxLandingDistance)
+                if (!spaceshipController.IsApproachingLanding())
                 {
                     currentState = gameState.Flying;
                     break;
                 }
 
                 //crash if we hit the space station too hard
-                TestIfCrashed();
+                if (spaceshipController.HasCrashed())
+                {
+                    currentState = gameState.Crashed;
+                    _fadeOnce = true;
+                }
                 
                 //land if we are close enough and slow enough and correctly aligned
-                if (landingLeg1Collider.Distance(landingZoneCollider).isOverlapped &&
-                    landingLeg2Collider.Distance(landingZoneCollider).isOverlapped
-                    )
+                if (spaceshipController.IsLanding())
                 {
-                    if (spaceShipRB.velocity.magnitude < maxLandingVelocity)
-                    {
-                        currentState = gameState.GameOver;
-                        _fadeOnce = true;
-                    }
-                    else
-                    {
-                        currentState = gameState.Crashed;
-                        _fadeOnce = true;
-                    }
+                    currentState = gameState.GameOver;
+                    _fadeOnce = true;
                 }
                 break;
             
@@ -139,10 +124,9 @@ public class GameHandler : MonoBehaviour
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
                     _fadeOnce = false;
                 }
-                //Debug.Log("state:game over");
+  
                 hudController.ShowGameOverMessage();
-                
-                spaceShipRB.velocity = new Vector2(0,0);
+                spaceshipController.StopSpaceship();
                 
                 if (Input.GetKey(KeyCode.Space))
                 {
@@ -158,7 +142,6 @@ public class GameHandler : MonoBehaviour
                     StartCoroutine(FadeAudioSource.StartFade(mainTheme, 1f, 0f));
                     _fadeOnce = false;
                 }
-                //Debug.Log("state:crashed");
                 
                 //show game over message
                 hudController.ShowCrashedMessage();
@@ -176,30 +159,5 @@ public class GameHandler : MonoBehaviour
         }
         
     }
-
-    void TestIfCrashed()
-    {
-        if (landingLeg1Collider.Distance(spaceStationCollider).isOverlapped ||
-            landingLeg2Collider.Distance(spaceStationCollider).isOverlapped ||
-            thruster1.Distance(spaceStationCollider).isOverlapped ||
-            thruster2.Distance(spaceStationCollider).isOverlapped 
-        )
-        {
-            if (spaceShipRB.velocity.magnitude > maxLandingVelocity)
-            {
-                currentState = gameState.Crashed;
-                _fadeOnce = true;
- 
-            }
-        }
-    }
-
-    void TestIfLostInSpace()
-    {
-        if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxSpaceDistance)
-        {
-            currentState = gameState.Crashed;
-            _fadeOnce = true;
-        }
-    }
+    
 }

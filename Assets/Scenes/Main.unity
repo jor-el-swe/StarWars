@@ -2044,6 +2044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   hudController: {fileID: 506529162}
+  spaceshipController: {fileID: 2011437803}
   spaceShipRB: {fileID: 581543956}
   landingZone: {fileID: 1483155262}
   thruster1: {fileID: 1708829043}
@@ -2121,6 +2122,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92b126bc56672347b59136f009ff54a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  landingZone: {fileID: 1483155262}
+  thruster1: {fileID: 1708829043}
+  thruster2: {fileID: 1888997391}
+  landingLeg1Collider: {fileID: 772477817}
+  landingLeg2Collider: {fileID: 1098339222}
+  landingZoneCollider: {fileID: 1483155263}
+  spaceStationCollider: {fileID: 1471489774}
 --- !u!1001 &2106310548959288331
 PrefabInstance:
   m_ObjectHideFlags: 0
