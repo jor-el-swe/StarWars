@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 /*this script controls collisions and if spacehip is lost in space
@@ -7,7 +9,7 @@ using UnityEngine;
 
 public class SpaceShipController : MonoBehaviour
 {
-    [SerializeField] private  GameObject landingZone = null;
+    [SerializeField] private GameObject landingZone = null;
     [SerializeField] private Collider2D landingZoneCollider = null;
     [SerializeField] private Collider2D spaceStationCollider = null;
 
@@ -25,6 +27,9 @@ public class SpaceShipController : MonoBehaviour
     private const float MaxLandingVelocity = 0.3f;
     private const float MaxSpaceDistance = 15.0f;
 
+    public TextMeshProUGUI speedText = null;
+    public TextMeshProUGUI maxSpeedText = null;
+
     private Rigidbody2D _spaceShipRb;
     
     // Start is called before the first frame update
@@ -36,7 +41,16 @@ public class SpaceShipController : MonoBehaviour
         _startRotation = _spaceShipRb.rotation;
 
     }
-    
+
+    private void Update()
+    {
+        var currentSpeed = Math.Round(_spaceShipRb.velocity.magnitude * 100f);
+        var maxLandingSpeed = Math.Round(MaxLandingVelocity * 100f);
+        
+        speedText.SetText( currentSpeed.ToString() );
+        maxSpeedText.SetText(maxLandingSpeed.ToString());
+    }
+
     public void ResetSpaceshipStartPosition()
     {
         _spaceShipRb.position = _startPosition;

@@ -14,6 +14,11 @@ public class HUDController : MonoBehaviour
     //findobjectoftype(hud)/gamemanager)
     //getcomponentsinchildren
     
+    
+    
+    
+    //add text for showing current speed and target speed
+    
     [SerializeField] TextMeshProUGUI welcomeText = null;
     [SerializeField] TextMeshProUGUI flyingText = null;
     [SerializeField] TextMeshProUGUI landingText = null;
@@ -26,6 +31,7 @@ public class HUDController : MonoBehaviour
         crashText.enabled = false;
         successText.enabled = false;
         welcomeText.enabled = true;
+        landingText.enabled = false;
     }
 
     public void ShowFlyingMessage()
