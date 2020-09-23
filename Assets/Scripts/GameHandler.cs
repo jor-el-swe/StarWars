@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using Object = System.Object;
+
+
 
 public class GameHandler : MonoBehaviour
 {
@@ -20,13 +20,7 @@ public class GameHandler : MonoBehaviour
     private bool _hasRestarted = false;
 
     //UI handling
-    //create a new UI component
-    //make that aware of the gamestate
-    [SerializeField] TextMeshProUGUI welcomeText = null;
-    [SerializeField] TextMeshProUGUI flyingText = null;
-    [SerializeField] TextMeshProUGUI landingText = null;
-    [SerializeField] TextMeshProUGUI successText = null;
-    [SerializeField] TextMeshProUGUI crashText = null;
+    [SerializeField] HUDController hudController = null;
     
     
     private Vector2 startPosition;
@@ -77,9 +71,7 @@ public class GameHandler : MonoBehaviour
                 }
 
                 //Debug.Log("state:start");
-                crashText.enabled = false;
-                successText.enabled = false;
-                welcomeText.enabled = true;
+                hudController.ShowStartMessage();
                 
                 //reset spaceship position
                 spaceShipRB.position = startPosition;
@@ -95,17 +87,12 @@ public class GameHandler : MonoBehaviour
             
                 case gameState.Flying:
                 //Debug.Log("state:flying");
+                hudController.ShowFlyingMessage();
                 
-
-                landingText.enabled = false;
-                welcomeText.enabled = false;
-                flyingText.enabled = true;
-                
-                //land if we are close enough and slow enough and correctly aligned
+                //enter landing state if we are close enough
                 if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) < maxLandingDistance)
                 {
                     currentState = gameState.Landing;
-                    //display landing message
                 }
                 
                 //crash if we hit the space station too hard
@@ -117,8 +104,7 @@ public class GameHandler : MonoBehaviour
 
             case gameState.Landing:
                 //Debug.Log("state:landing");
-                flyingText.enabled = false;
-                landingText.enabled = true;
+                hudController.ShowLandingMessage();
 
                 if (Vector2.Distance(spaceShipRB.position, landingZone.transform.position) > maxLandingDistance)
                 {
@@ -144,7 +130,6 @@ public class GameHandler : MonoBehaviour
                         currentState = gameState.Crashed;
                         _fadeOnce = true;
                     }
-                        
                 }
                 break;
             
@@ -155,8 +140,7 @@ public class GameHandler : MonoBehaviour
                     _fadeOnce = false;
                 }
                 //Debug.Log("state:game over");
-                landingText.enabled = false;
-                successText.enabled = true;
+                hudController.ShowGameOverMessage();
                 
                 spaceShipRB.velocity = new Vector2(0,0);
                 
@@ -177,9 +161,7 @@ public class GameHandler : MonoBehaviour
                 //Debug.Log("state:crashed");
                 
                 //show game over message
-                flyingText.enabled = false;
-                landingText.enabled = false;
-                crashText.enabled = true;
+                hudController.ShowCrashedMessage();
                 
                 if (Input.GetKeyUp(KeyCode.Space))
                 {

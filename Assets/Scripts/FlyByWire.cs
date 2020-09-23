@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/*
+ * This Script Handles all user input to control the spaceship
+ */
 
 public class FlyByWire : MonoBehaviour
 {
-    
-    //[SerializeField] instead of public
-    
     private const int LIMIT_ANGULAR_VELOCITY = 10;
     
     //remove this. use events/signalling instead
