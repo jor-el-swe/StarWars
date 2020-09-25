@@ -172,6 +172,7 @@ public class FlyByWire : MonoBehaviour
 
   void DecayVelocity()
   {
+    
       if (Math.Abs(_spaceshipRb.angularVelocity) > LIMIT_ANGULAR_VELOCITY)
       {
           //first check angular velocity, and apply counter/clockwise thrusters

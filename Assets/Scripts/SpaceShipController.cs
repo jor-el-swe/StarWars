@@ -21,7 +21,7 @@ public class SpaceShipController : MonoBehaviour
     private float _startRotation;
     public  float MaxLandingDistance = 3.0f;
     private const float MaxLandingVelocity = 0.4f;
-    private const float MaxSpaceDistance = 15.0f;
+    public float MaxSpaceDistance = 23.0f;
 
     public TextMeshProUGUI speedText = null;
     public TextMeshProUGUI maxSpeedText = null;

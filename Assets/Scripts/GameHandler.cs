@@ -140,6 +140,10 @@ public class GameHandler : MonoBehaviour
                     {
                         SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex + 1);
                     }
+                    else
+                    {
+                        SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex - 1);
+                    }
                 }
                 //show game over message
                 break;
