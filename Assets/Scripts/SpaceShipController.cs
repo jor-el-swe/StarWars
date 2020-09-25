@@ -11,12 +11,8 @@ public class SpaceShipController : MonoBehaviour
 {
     [SerializeField] private GameObject landingZone = null;
     [SerializeField] private Collider2D landingZoneCollider = null;
-    [SerializeField] private Collider2D spaceStationCollider = null;
-
-
+  
     //getcomponentsinchildren for these thrusters!!!
-    [SerializeField] private Collider2D thruster1 = null;
-    [SerializeField] private Collider2D thruster2 = null;
     [SerializeField] private Collider2D landingLeg1Collider = null;
     [SerializeField] private Collider2D landingLeg2Collider = null;
     
@@ -24,13 +20,21 @@ public class SpaceShipController : MonoBehaviour
     private Vector2 _startPosition;
     private float _startRotation;
     private const float MaxLandingDistance = 3.0f;
-    private const float MaxLandingVelocity = 0.3f;
+    private const float MaxLandingVelocity = 0.4f;
     private const float MaxSpaceDistance = 15.0f;
 
     public TextMeshProUGUI speedText = null;
     public TextMeshProUGUI maxSpeedText = null;
 
     private Rigidbody2D _spaceShipRb;
+    private bool _hasCrashed = false;
+    
+    
+    public bool HasCrashed
+    {
+        get { return _hasCrashed; }
+        set { _hasCrashed = value; }
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -53,6 +57,7 @@ public class SpaceShipController : MonoBehaviour
 
     public void ResetSpaceshipStartPosition()
     {
+        _hasCrashed = false;
         _spaceShipRb.position = _startPosition;
         _spaceShipRb.rotation = _startRotation;
         _spaceShipRb.angularVelocity = 0f;
@@ -64,22 +69,6 @@ public class SpaceShipController : MonoBehaviour
         _spaceShipRb.velocity = new Vector2(0,0);
     }   
     
-    public bool HasCrashed()
-    {
-        if (landingLeg1Collider.Distance(spaceStationCollider).isOverlapped ||
-            landingLeg2Collider.Distance(spaceStationCollider).isOverlapped ||
-            thruster1.Distance(spaceStationCollider).isOverlapped ||
-            thruster2.Distance(spaceStationCollider).isOverlapped 
-        )
-        {
-            if (_spaceShipRb.velocity.magnitude > MaxLandingVelocity)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public bool IsLostInSpace()
     {
         if (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) > MaxSpaceDistance)
@@ -94,7 +83,8 @@ public class SpaceShipController : MonoBehaviour
 
         return (landingLeg1Collider.Distance(landingZoneCollider).isOverlapped &&
                 landingLeg2Collider.Distance(landingZoneCollider).isOverlapped &&
-                _spaceShipRb.velocity.magnitude < MaxLandingVelocity);
+                _spaceShipRb.velocity.magnitude < MaxLandingVelocity &&
+                !_hasCrashed);
         
     }
 
@@ -102,5 +92,10 @@ public class SpaceShipController : MonoBehaviour
     {
         return (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) < MaxLandingDistance);
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        _hasCrashed = _spaceShipRb.velocity.magnitude > MaxLandingVelocity;
     }
 }

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3616097843650153143}
   - component: {fileID: 3616097843650153136}
   - component: {fileID: 3616097843650153137}
-  - component: {fileID: 3553763427881645023}
   - component: {fileID: 6708735338591259954}
   - component: {fileID: 7357146920432588136}
+  - component: {fileID: 3670226378338757384}
+  - component: {fileID: 5280456831560099252}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -82,22 +83,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!70 &3553763427881645023
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3616097843650153139}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
 --- !u!50 &6708735338591259954
 Rigidbody2D:
   serializedVersion: 4
@@ -131,7 +116,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234bb2aac9197e043bc068c8a28f7da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t1: {fileID: 0}
-  t2: {fileID: 0}
-  t3: {fileID: 0}
-  t4: {fileID: 0}
+  GameHandler: {fileID: 0}
+  thrusterSound: {fileID: 0}
+  thrusters: []
+--- !u!114 &3670226378338757384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3616097843650153139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a92b126bc56672347b59136f009ff54a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  landingZone: {fileID: 0}
+  landingZoneCollider: {fileID: 0}
+  landingLeg1Collider: {fileID: 0}
+  landingLeg2Collider: {fileID: 0}
+  speedText: {fileID: 0}
+  maxSpeedText: {fileID: 0}
+--- !u!70 &5280456831560099252
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3616097843650153139}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.99999994, y: 1.9999999}
+  m_Direction: 0

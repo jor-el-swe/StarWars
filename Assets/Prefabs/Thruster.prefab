@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceMagnitude: 1
-  thrusterSound: {fileID: 0}
+  spaceship: {fileID: 3616097843650153139, guid: ffbc0d0961288f84a90d4c18bbeee1bf,
+    type: 3}
 --- !u!198 &1594924531552912658
 ParticleSystem:
   m_ObjectHideFlags: 0

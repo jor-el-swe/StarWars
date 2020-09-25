@@ -78,7 +78,7 @@ public class GameHandler : MonoBehaviour
                 }
 
                 //crash if we hit the space station too hard
-                if (spaceshipController.HasCrashed())
+                if (spaceshipController.HasCrashed)
                 {
                     currentState = gameState.Crashed;
                     _fadeOnce = true;
@@ -104,7 +104,7 @@ public class GameHandler : MonoBehaviour
                 }
 
                 //crash if we hit the space station too hard
-                if (spaceshipController.HasCrashed())
+                if (spaceshipController.HasCrashed)
                 {
                     currentState = gameState.Crashed;
                     _fadeOnce = true;
