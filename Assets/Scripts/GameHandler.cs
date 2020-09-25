@@ -10,17 +10,19 @@ using UnityEngine.Rendering;
 public class GameHandler : MonoBehaviour
 {
     public enum gameState {
+        Init,
         Start,
         Flying, 
         Landing,
         GameOver, 
         Crashed
     }
-    public gameState currentState = gameState.Start;
+    public gameState currentState = gameState.Init;
     private bool _hasRestarted = false;
 
     //UI handling
     [SerializeField] HUDController hudController = null;
+    public GameObject mainCamera = null;
     
     //Spaceship collision handling
     [SerializeField] SpaceShipController spaceshipController = null;
@@ -36,6 +38,11 @@ public class GameHandler : MonoBehaviour
 
         mainTheme.volume = 0;
         mainTheme.Play();
+        if (_fadeOnce)
+        {
+            StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, 0.5f));
+            _fadeOnce = false;
+        }
     }
     
 
@@ -44,6 +51,16 @@ public class GameHandler : MonoBehaviour
     {
         switch (currentState)
         {
+            case gameState.Init:
+                
+                if (mainCamera.GetComponent<LookAtTransform>().zoomedIn)
+                {
+                    currentState = gameState.Start;
+                    //show start message
+                    hudController.ShowStartMessage();
+                }
+
+                break;
             case gameState.Start:
 
                 if (_fadeOnce)
@@ -52,11 +69,6 @@ public class GameHandler : MonoBehaviour
                     _fadeOnce = false;
                 }
                 
-                //show start message
-                //sendmessage() can be used to invoke method also
-                hudController.ShowStartMessage();
-                
-                
                 //reset spaceship position
                 spaceshipController.ResetSpaceshipStartPosition();
 
@@ -64,23 +76,24 @@ public class GameHandler : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space) || _hasRestarted)
                 {
                     currentState = gameState.Flying;
+                    hudController.ShowFlyingMessage();
                 }
                 break;
             
             case gameState.Flying:
 
-                hudController.ShowFlyingMessage();
-                
                 //enter landing state if we are close enough
                 if (spaceshipController.IsApproachingLanding())
                 {
                     currentState = gameState.Landing;
+                    hudController.ShowLandingMessage();
                 }
 
                 //crash if we hit the space station too hard
                 if (spaceshipController.HasCrashed())
                 {
                     currentState = gameState.Crashed;
+                    hudController.ShowCrashedMessage();
                     _fadeOnce = true;
                 }
                 
@@ -88,6 +101,7 @@ public class GameHandler : MonoBehaviour
                 if (spaceshipController.IsLostInSpace())
                 {
                     currentState = gameState.Crashed;
+                    hudController.ShowCrashedMessage();
                     _fadeOnce = true;
                 }
                 
@@ -95,11 +109,11 @@ public class GameHandler : MonoBehaviour
             
 
             case gameState.Landing:
-                hudController.ShowLandingMessage();
-
+                
                 if (!spaceshipController.IsApproachingLanding())
                 {
                     currentState = gameState.Flying;
+                    hudController.ShowFlyingMessage();
                     break;
                 }
 
@@ -107,6 +121,7 @@ public class GameHandler : MonoBehaviour
                 if (spaceshipController.HasCrashed())
                 {
                     currentState = gameState.Crashed;
+                    hudController.ShowCrashedMessage();
                     _fadeOnce = true;
                 }
                 
@@ -114,6 +129,7 @@ public class GameHandler : MonoBehaviour
                 if (spaceshipController.IsLanding())
                 {
                     currentState = gameState.GameOver;
+                    hudController.ShowGameOverMessage();
                     _fadeOnce = true;
                 }
                 break;
@@ -125,11 +141,12 @@ public class GameHandler : MonoBehaviour
                     _fadeOnce = false;
                 }
   
-                hudController.ShowGameOverMessage();
                 spaceshipController.StopSpaceship();
                 
                 if (Input.GetKey(KeyCode.Space))
                 {
+                    //show start message
+                    hudController.ShowStartMessage();
                     currentState = gameState.Start;
                     _fadeOnce = true;
                 }
@@ -143,11 +160,10 @@ public class GameHandler : MonoBehaviour
                     _fadeOnce = false;
                 }
                 
-                //show game over message
-                hudController.ShowCrashedMessage();
-                
                 if (Input.GetKeyUp(KeyCode.Space))
                 {
+                    //show start message
+                    hudController.ShowStartMessage();
                     _fadeOnce = true;
                     _hasRestarted = true;
                     currentState = gameState.Start;

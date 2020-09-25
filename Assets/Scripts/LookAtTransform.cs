@@ -5,43 +5,35 @@ using UnityEngine;
 
 public class LookAtTransform : MonoBehaviour
 {
-   // private Quaternion _rotation;
     
 
     public Transform SpaceShip;
     private Camera _cam;
 
+    private bool _zoomedIn = false;
+    
+    public bool zoomedIn
+    {
+        get { return _zoomedIn; }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
        _cam = transform.GetComponent<Camera>();
-       _cam.fieldOfView = 200;
-       StartCoroutine( StartFade(_cam, 5f, 60) );
-    }
-
-    void Awake()
-    {
-        
-      //  _rotation = transform.rotation;
+        _cam.fieldOfView = 200;
+       StartCoroutine( StartFade(_cam, 3f, 60) );
     }
 
     private void Update()
     {
         transform.LookAt(SpaceShip);
     }
-
-    void LateUpdate()
-    {
-        
-       // transform.rotation = _rotation;
-    }
     
-
-    public static IEnumerator StartFade(Camera cam, float duration, float targetFOV)
+    private IEnumerator StartFade(Camera cam, float duration, float targetFOV)
     {
         float currentTime = 0;
-        float start = 200; 
+        const float start = 200; 
 
         while (currentTime < duration)
         {
@@ -49,6 +41,9 @@ public class LookAtTransform : MonoBehaviour
             cam.fieldOfView = Mathf.Lerp(start, targetFOV, currentTime / duration);
             yield return null;
         }
+
+        _zoomedIn = true;
+        
         yield break;
     }
 
