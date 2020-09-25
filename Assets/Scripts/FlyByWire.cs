@@ -178,12 +178,12 @@ public class FlyByWire : MonoBehaviour
           //first check angular velocity, and apply counter/clockwise thrusters
           if (_spaceshipRb.angularVelocity > 0)
           {
-              ActivateThrusters(_clockwiseThrusters, 2);
+              ActivateThrusters(_clockwiseThrusters, 1);
 
           }
           else if (_spaceshipRb.angularVelocity < 0)
           {
-              ActivateThrusters(_counterClockwiseThrusters, 2);
+              ActivateThrusters(_counterClockwiseThrusters, 1);
           }
       }
       else
