@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 
 
@@ -28,6 +29,7 @@ public class GameHandler : MonoBehaviour
     //game music
     [SerializeField]  AudioSource mainTheme = null;
     private bool _fadeOnce = true;
+    public float TargetVolumeMusic = 0.5f;
 
     
     // Start is called before the first frame update
@@ -48,7 +50,7 @@ public class GameHandler : MonoBehaviour
 
                 if (_fadeOnce)
                 {
-                    StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, 0.5f));
+                    StartCoroutine(FadeAudioSource.StartFade(mainTheme, 2f, TargetVolumeMusic));
                     _fadeOnce = false;
                 }
                 
@@ -132,6 +134,12 @@ public class GameHandler : MonoBehaviour
                 {
                     currentState = gameState.Start;
                     _fadeOnce = true;
+                    
+                    var scene = SceneManager.GetActiveScene();
+                    if (scene.buildIndex == 0)
+                    {
+                        SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex + 1);
+                    }
                 }
                 //show game over message
                 break;

@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class SpaceShipController : MonoBehaviour
 {
-    [SerializeField] private GameObject landingZone = null;
+    [SerializeField] private GameObject [] landingZones = null;
     [SerializeField] private Collider2D landingZoneCollider = null;
   
     //getcomponentsinchildren for these thrusters!!!
@@ -19,7 +19,7 @@ public class SpaceShipController : MonoBehaviour
     
     private Vector2 _startPosition;
     private float _startRotation;
-    private const float MaxLandingDistance = 3.0f;
+    public  float MaxLandingDistance = 3.0f;
     private const float MaxLandingVelocity = 0.4f;
     private const float MaxSpaceDistance = 15.0f;
 
@@ -71,11 +71,17 @@ public class SpaceShipController : MonoBehaviour
     
     public bool IsLostInSpace()
     {
-        if (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) > MaxSpaceDistance)
+        var isCloseEnough = false;
+        
+        foreach (var landingZone in landingZones)
         {
-            return true;
+            if (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) < MaxSpaceDistance)
+            {
+                isCloseEnough = true;
+            }
         }
-        return false;
+ 
+        return !isCloseEnough;
     }
 
     public bool IsLanding()
@@ -90,8 +96,17 @@ public class SpaceShipController : MonoBehaviour
 
     public bool IsApproachingLanding()
     {
-        return (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) < MaxLandingDistance);
-
+        var isCloseEnough = false;
+        
+        foreach (var landingZone in landingZones)
+        {
+            if (Vector2.Distance(_spaceShipRb.position, landingZone.transform.position) < MaxLandingDistance)
+            {
+                isCloseEnough = true;
+            }
+        }
+ 
+        return isCloseEnough;
     }
 
     private void OnCollisionEnter2D(Collision2D other) 
